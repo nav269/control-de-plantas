@@ -1,73 +1,101 @@
-# DESAFÍO: Modelado Predictivo del Crecimiento del Maíz en Achocalla, La Paz
+# 🌽 Modelado Predictivo del Crecimiento del Maíz en Achocalla, La Paz - Bolivia
 
-## 1. Introducción
+Este proyecto tiene como objetivo estimar el crecimiento diario del maíz en la región de Achocalla, ubicada en el departamento de La Paz, Bolivia. Se utilizan técnicas de interpolación y regresión para modelar el crecimiento de la planta con base en datos reales aproximados y considerando factores geográficos y climáticos.
 
-El maíz (Zea mays) es uno de los cultivos más importantes en Bolivia, especialmente en regiones de altura como Achocalla, que se encuentra a aproximadamente 3,600 metros sobre el nivel del mar. Las condiciones climáticas de esta zona, tales como las bajas temperaturas y la variabilidad climática, tienen un impacto significativo en el crecimiento y rendimiento del maíz. Este informe tiene como objetivo modelar el crecimiento del maíz en Achocalla utilizando diferentes métodos numéricos e inteligencia artificial, enfocándonos en la interpolación de datos y la regresión.
+---
 
-## 2. Datos de Crecimiento del Maíz
+## 📍 Contexto
 
-Los datos de crecimiento del maíz en Achocalla fueron recolectados bajo condiciones controladas, midiendo la altura de las plantas en días específicos después de la siembra (DDS). Los datos utilizados son los siguientes:
+Achocalla se encuentra a una altitud aproximada de 3.600 msnm, lo cual influye significativamente en el crecimiento del maíz debido a:
 
-| DDS  | Altura (cm) |
-|------|-------------|
-| 0    | 0           |
-| 15   | 20          |
-| 30   | 50          |
-| 45   | 80          |
-| 60   | **110** (Estimación a interpolar)         |
-| 75   | 140         |
-| 90   | 160         |
-| 105  | **170** (Estimación a interpolar)        |
-| 120  | 175         |
+- Altas variaciones de temperatura diurna y nocturna.
+- Temporada de lluvias estacional.
+- Radiación solar intensa.
 
-Como se observa, las alturas en los días 60 y 105 son estimaciones que necesitamos obtener utilizando los métodos de interpolación.
+Además, el crecimiento también está influenciado por la calidad de la semilla utilizada. En este estudio se asume el uso de semillas de **calidad intermedia a alta**, adaptadas a climas fríos de altura.
 
-## 3. Métodos de Modelado
+---
 
-### 3.1 Interpolación por Newton
+## 📊 Datos utilizados
 
-La interpolación de Newton utiliza una forma iterativa para construir el polinomio interpolante. Este método es útil cuando se tienen pocos puntos de datos y se desea obtener una expresión polinómica que pase exactamente por todos los puntos dados. Es especialmente eficiente cuando se agregan nuevos puntos, ya que no es necesario recalcular todo el polinomio.
+Los siguientes datos representan alturas (en cm) del maíz medidas a distintos días después de la siembra:
 
-### 3.2 Interpolación de Lagrange
+| Días (x) | Altura (cm) (y) |
+|----------|------------------|
+| 15       | 20               |
+| 30       | 50               |
+| 45       | 80               |
+| 75       | 140              |
+| 90       | 160              |
+| 120      | 175              |
 
-El método de interpolación de Lagrange construye el polinomio interpolante de manera explícita. A diferencia de Newton, el polinomio de Lagrange se construye como una suma ponderada de polinomios de base, cada uno de los cuales es un polinomio que pasa por todos los puntos excepto uno. Este método es sencillo pero puede ser menos eficiente en términos computacionales para conjuntos de datos grandes.
+Los valores que se desean predecir son:
 
-### 3.3 Interpolación por Splines
+- ¿Cuál será la altura del maíz a los **60 días**?
+- ¿Y a los **105 días**?
 
-Los splines son una serie de polinomios definidos por tramos que se ajustan a los puntos de datos, y la transición entre estos tramos es suave. La interpolación cúbica es la más común, ya que utiliza polinomios de tercer grado para garantizar que la curva sea suave y continúe sin discontinuidades en las primeras y segundas derivadas.
+---
 
-### 3.4 Regresión Lineal
+## 🧠 Métodos aplicados
 
-La regresión lineal ajusta una línea recta a los datos para modelar la relación entre las variables. En el caso del crecimiento del maíz, este método asume que existe una relación lineal entre los días después de la siembra (DDS) y la altura de la planta, lo cual es adecuado cuando los datos muestran un crecimiento relativamente constante a lo largo del tiempo.
+Se aplicaron los siguientes métodos para estimar el crecimiento del maíz:
 
-## 4. Resultados
+### 1. Interpolación de Newton
 
-A continuación se presentan las estimaciones de la altura en los días 60 y 105 utilizando los métodos mencionados:
+**Análisis de los resultados:**
 
-| Método                | Altura estimada en DDS 60 (cm) | Altura estimada en DDS 105 (cm) |
-|-----------------------|-------------------------------|---------------------------------|
-| Interpolación de Newton| 105                           | 165                             |
-| Interpolación de Lagrange| 105                           | 165                             |
-| Interpolación por Splines| 105                           | 165                             |
-| Regresión Lineal      | 105                           | 165                             |
+- **Interpolación de Newton**:
+  - Este método produjo estimaciones consistentes y precisas. Presentó muy buenos resultados ya que toma en cuenta la progresión no lineal entre puntos.
+  - Para 60 días → **111.48 cm**
+  - Para 105 días → **169.52 cm**
 
-## 5. Análisis de Resultados
+---
 
-Los resultados obtenidos con todos los métodos de interpolación (Newton, Lagrange, y Splines) y la regresión lineal fueron muy similares, lo que sugiere que el crecimiento del maíz en Achocalla sigue una tendencia lineal o casi lineal entre los días 60 y 105. Aunque los métodos de interpolación ofrecen una representación precisa de los puntos intermedios, la regresión lineal proporciona una forma más simple y eficiente para modelar el crecimiento en este intervalo específico.
+### 2. Interpolación de Lagrange
 
-## 6. Consideraciones
+**Análisis de los resultados:**
 
-- **Altitud y Clima**: La altitud de Achocalla y las temperaturas frías ralentizan el crecimiento del maíz. Por lo tanto, es crucial seleccionar variedades adaptadas a estas condiciones.
-- **Calidad de la Semilla**: El uso de semillas certificadas y de alta calidad puede mejorar el rendimiento y la resistencia a factores climáticos adversos.
-- **Prácticas Agrícolas**: La implementación de prácticas agrícolas modernas y el uso de tecnología para monitorear las condiciones del cultivo pueden aumentar la eficiencia y productividad del maíz en Achocalla.
+- **Interpolación de Lagrange**:
+  - Al igual que Newton, logra una buena precisión ya que considera todos los puntos. Al ser un polinomio de alto grado puede ser sensible a oscilaciones si hay más datos.
+  - Para 60 días → **111.48 cm**
+  - Para 105 días → **169.52 cm**
 
-## 7. Recomendaciones
+---
 
-- **Selección de Variedades**: Se recomienda el uso de variedades de maíz que sean resistentes a las condiciones de frío y de ciclo largo, adaptadas a las condiciones climáticas de Achocalla.
-- **Capacitación**: Es importante fomentar la capacitación de los agricultores locales en prácticas agrícolas sostenibles y el manejo adecuado de semillas de calidad.
-- **Investigación Local**: Se recomienda continuar con la investigación para desarrollar modelos predictivos más precisos que puedan ser utilizados para mejorar la producción de maíz en la región.
+### 3. Interpolación por Splines cúbicos
 
-## 8. Bibliografía
+**Análisis de los resultados:**
+
+- **Interpolación Spline**:
+  - Proporciona una curva más suave que conecta los puntos. Es más realista para el crecimiento natural del maíz.
+  - Para 60 días → **110.75 cm**
+  - Para 105 días → **169.04 cm**
+
+---
+
+### 4. Regresión Lineal
+
+**Análisis de los resultados:**
+
+- **Regresión Lineal**:
+  - Se asume un crecimiento constante a lo largo del tiempo, lo cual no refleja completamente la naturaleza del crecimiento del maíz, que tiende a desacelerarse en etapas tardías.
+  - Para 60 días → **100.26 cm**
+  - Para 105 días → **170.53 cm**
+
+---
+
+## 📈 Comparación de Resultados
+
+| Método               | 60 días (cm) | 105 días (cm) |
+|----------------------|--------------|---------------|
+| Newton               | 111.48       | 169.52        |
+| Lagrange             | 111.48       | 169.52        |
+| Splines cúbicos      | 110.75       | 169.04        |
+| Regresión lineal     | 100.26       | 170.53        |
+
+---
+
+## Referencias
 
 1. **Instituto Nacional de Innovación Agropecuaria y Forestal (INIAF)**. (2018). *Guía para la Producción de Maíz en Bolivia*. Recuperado de [www.iniaf.gob.bo](http://www.iniaf.gob.bo)  
 2. **SENAMHI**. (2021). *Estudio Agroclimático de la Región Andina: Caso Achocalla*. Recuperado de [www.senamhi.gob.bo](https://www.senamhi.gob.bo)  
